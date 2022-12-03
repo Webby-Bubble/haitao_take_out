@@ -1,92 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-        <title>菩提阁</title>
-        <link rel="icon" href="./../images/favico.ico">
-        <!--不同屏幕尺寸根字体设置-->
-        <script src="./../js/base.js"></script>
-        <!--element-ui的样式-->
-        <link rel="stylesheet" href="../../backend/plugins/element-ui/index.css" />
-        <!--引入vant样式-->
-        <link rel="stylesheet" href="../styles/vant.min.css"/>
-        <!-- 引入样式  -->
-        <link rel="stylesheet" href="../styles/index.css" />
-        <!--本页面内容的样式-->
-        <link rel="stylesheet" href="./../styles/login.css" />
-      </head>
-    <body>
-        <div id="login" v-loading="loading">
-            <div class="divHead">登录</div>
-            <div class="divContainer">
-                <el-input placeholder=" 请输入手机号码" v-model="form.phone"  maxlength='20'/></el-input>
-                <div class="divSplit"></div>
-                <el-input placeholder=" 请输入验证码" v-model="form.code"  maxlength='20'/></el-input>
-                <span @click='getCode'>获取验证码</span>
-            </div>
-            <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>
-            <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">登录</el-button>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瑞吉外卖管理端</title>
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../styles/common.css">
+    <link rel="stylesheet" href="../../styles/login.css">
+    <link rel="stylesheet" href="../../styles/icon/iconfont.css" />
+    <style>
+        .body{
+            min-width: 1366px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="login" id="login-app">
+    <div class="login-box">
+        <img src="../../images/login/login-l.png" alt="">
+        <div class="login-form">
+            <el-form ref="loginForm" :model="loginForm" :rules="loginRules" >
+                <div class="login-form-title">
+                    <img src="../../images/login/logo.png" style="width:139px;height:42px;" alt="" />
+                </div>
+                <el-form-item prop="username">
+                    <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号" maxlength="20"
+                              prefix-icon="iconfont icon-user" />
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input v-model="loginForm.password" type="password" placeholder="密码" prefix-icon="iconfont icon-lock" maxlength="20"
+                              @keyup.enter.native="handleLogin" />
+                </el-form-item>
+                <el-form-item style="width:100%;">
+                    <el-button :loading="loading" class="login-btn" size="medium" type="primary" style="width:100%;"
+                               @click.native.prevent="handleLogin">
+                        <span v-if="!loading">登录</span>
+                        <span v-else>登录中...</span>
+                    </el-button>
+                </el-form-item>
+            </el-form>
         </div>
-        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-        <script src="../../backend/plugins/vue/vue.js"></script>
-        <!-- 引入组件库 -->
-        <script src="../../backend/plugins/element-ui/index.js"></script>
-        <!-- 引入vant样式 -->
-        <script src="./../js/vant.min.js"></script>  
-        <!-- 引入axios -->
-        <script src="../../backend/plugins/axios/axios.min.js"></script>
-        <script src="./../js/request.js"></script>
-        <script src="./../api/login.js"></script>
-    </body>
-    <script>
-        new Vue({
-            el:"#login",
-            data(){
-                return {
-                    form:{
-                        phone:'',
-                        code:''
-                    },
-                    msgFlag:false,
-                    loading:false
-                }
-            },
-            computed:{},
-            created(){},
-            mounted(){},
-            methods:{
-                getCode(){
-                    this.form.code = ''
-                    const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
-                    if (regex.test(this.form.phone)) {
-                        this.msgFlag = false
-                        //this.form.code = (Math.random()*1000000).toFixed(0)
-                        sendMsgApi({phone:this.form.phone})
-                    }else{
-                        this.msgFlag = true
-                    }
+    </div>
+</div>
+
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../plugins/axios/axios.min.js"></script>
+<script src="../../js/request.js"></script>
+<script src="../../js/validate.js"></script>
+<script src="../../api/login.js"></script>
+
+<script>
+    new Vue({
+        el: '#login-app',
+        data() {
+            return {
+                loginForm:{
+                    username: 'admin',
+                    password: '123456'
                 },
-                async btnLogin(){
-                    if(this.form.phone && this.form.code){
-                        this.loading = true
-                        const res = await loginApi(this.form)
-                        this.loading = false
-                        if(res.code === 1){
-                            sessionStorage.setItem("userPhone",this.form.phone)
-                            window.requestAnimationFrame(()=>{
-                                window.location.href= '/front/index.html'
-                            })                           
-                        }else{
-                            this.$notify({ type:'warning', message:res.msg});
-                        }
-                    }else{
-                        this.$notify({ type:'warning', message:'请输入手机号码'});
+                loading: false
+            }
+        },
+        computed: {
+            loginRules() {
+                const validateUsername = (rule, value, callback) => {
+                    if (value.length < 1 ) {
+                        callback(new Error('请输入用户名'))
+                    } else {
+                        callback()
                     }
+                }
+                const validatePassword = (rule, value, callback) => {
+                    if (value.length < 6) {
+                        callback(new Error('密码必须在6位以上'))
+                    } else {
+                        callback()
+                    }
+                }
+                return {
+                    'username': [{ 'validator': validateUsername, 'trigger': 'blur' }],
+                    'password': [{ 'validator': validatePassword, 'trigger': 'blur' }]
                 }
             }
-        })
-    </script>
+        },
+        created() {
+        },
+        methods: {
+            async handleLogin() {
+                this.$refs.loginForm.validate(async (valid) => {
+                    if (valid) {
+                        this.loading = true
+                        let res = await loginApi(this.loginForm)
+                        if (String(res.code) === '1') {//1表示登录成功
+                            localStorage.setItem('userInfo',JSON.stringify(res.data))
+                            window.location.href= '/backend/index.html'
+                        } else {
+                            this.$message.error(res.msg)
+                            this.loading = false
+                        }
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+
 </html>
