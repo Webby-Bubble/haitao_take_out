@@ -12,9 +12,10 @@ spring:
       password: 224514
   #Redis相关配置
   redis:
-    host: 192.168.163.130
+#    host: 192.168.163.130
+    host: 127.0.0.1
     port: 6379
-    password: 224514
+    password:
     database: 0
     jedis:
       #Redis连接池配置
