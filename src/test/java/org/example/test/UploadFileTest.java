@@ -9,5 +9,9 @@ public class UploadFileTest {
         String suffix=fileName.substring(fileName.lastIndexOf("."));
         System.out.println(suffix);
     }
+    @Test
+    public void test2(){
+        System.err.println("我是错误提示信息");
+    }
 
 }

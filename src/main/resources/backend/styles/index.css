@@ -61,7 +61,7 @@
   height: 64px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: rgba(7, 193, 96, 0.82);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 }
 .navbar .hamburger-container {

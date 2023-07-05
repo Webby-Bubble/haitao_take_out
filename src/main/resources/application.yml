@@ -1,21 +1,21 @@
 server:
-  port: 8080
+  port: 8082
 spring:
   application:
     #应用名称，可选
     name: reggie_take_out
-  datasource:
+  datasource: #下面是数据库配置
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      url: jdbc:mysql://localhost:3306/haitao?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 224514
   #Redis相关配置
   redis:
 #    host: 192.168.163.130
-    host: 127.0.0.1
-    port: 6379
-    password:
+    host: 127.0.0.1  #这个host是redis的host，本地redis
+    port: 6379    #这个port是redis的host，本地redis
+    password:        #这个password是redis的密码，本地redis无密码直接为空
     database: 0
     jedis:
       #Redis连接池配置

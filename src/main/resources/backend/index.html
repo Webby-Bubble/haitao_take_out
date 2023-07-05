@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+  <head><!-- head里包含引入的文件 -->
+    <meta charset="UTF-8" /> <!-- UTF-8是中文 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>瑞吉外卖管理端</title>
+    <title>海涛点餐管理端</title>
     <link rel="shortcut icon" href="favicon.ico">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="plugins/element-ui/index.css" />
@@ -17,6 +17,7 @@
       }
       .app-main{
         height: calc(100% - 64px);
+        background-color: rgba(0, 119, 170, 0.94);
       }
       .app-main .divTmp{
         width: 100%;
@@ -40,9 +41,9 @@
               :default-active="defAct"
               :unique-opened="false"
               :collapse-transition="false"
-              background-color="#343744"
-              text-color="#bfcbd9"
-              active-text-color="#f4f4f5"
+              background-color="rgb(192,192,192)"
+              text-color="rgb(0,0,0)"
+              active-text-color="#F56C6C"
             >
               <div v-for="item in menuList" :key="item.id">
                 <el-submenu :index="item.id" v-if="item.children && item.children.length>0">
@@ -150,6 +151,20 @@
                     id: '6',
                     name: '订单明细',
                     url: 'page/order/list.html',
+                    icon: 'icon-order'
+                  },
+                  //新增统计报表
+                  {
+                    id: '7',
+                    name: '客户管理',
+                    url: 'page/user/list.html',
+                    icon: 'icon-member'
+                  },
+                  //新增统计报表
+                  {
+                    id: '8',
+                    name: '统计报表',
+                    url: 'page/list/list.html',
                     icon: 'icon-order'
                   }
               //   ],
